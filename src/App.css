@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+.flex-container {
+  display: flex;
+
+  border-style: solid;
+  border-width: 1px;
+ 
+  
+  
+}
+.flex-container > p {
+  flex-basis: 15%;
+  background-color: DodgerBlue;
+  color: white;
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+
+  border-right:solid 1px;
+  font-size: 15px;
+  
+}
