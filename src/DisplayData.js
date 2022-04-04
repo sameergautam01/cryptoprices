@@ -1,5 +1,6 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect}  from 'react';
 import {useQuery,gql} from "@apollo/client"
+// import SearchBar from './SearchBar';
 
 const ALL_USER_DATA= gql`
   query GetUserData {
@@ -17,18 +18,34 @@ const ALL_USER_DATA= gql`
       }
     }
   }
-`;
-const handleOnChange=(event) =>
-{
-    const {name,checked}=event.target;
+`
 
-if(name==="selectAll"){
+const DisplayData=() => {
+        
+    const  handleonChange=(e)=> {
+        setSearchTerm(e.target.value)
+        if(e.target.value.length>0){
+         setFilterData(data.users.data.filter(user => {
+                return user.name.toLowerCase().includes(searchTerm.toLowerCase()) ;
+            }))}
+        else {
+            setFilterData(data.users.data)
+        }
+        
+}
     
-}
-}
-function DisplayData() {
-    const [check,useCheck]=useState();
+
+    const [searchTerm,setSearchTerm]=useState("");
+    const [filterData,setFilterData]=useState([]);
+
+
     const {data, error,loading} = useQuery(ALL_USER_DATA);
+    useEffect(() => {
+        if(data){
+            setFilterData(data.users.data)
+        }
+    },[data]);
+    
     if (error){
         return <h1> error occured while fetching api</h1>
     }
@@ -39,14 +56,29 @@ function DisplayData() {
     if (data){
         console.log(data);
     }
+    
+   
+    console.log(filterData);
+
+
     return (
         <div >
-            <input type="checkbox" name="selectAll" onChange={handleOnChange}/>
-           { data && data.users.data.map((user) => {
+            
+            <input type="text" placeholder="type your search text here" onChange={handleonChange} />
+            <div className="flex-conta" > 
+            <input type="checkbox" name="selectAll"/>
+                    <p>Name</p>
+                   <p>Username</p>
+                   <p>Email</p>
+                   <p>Phone</p>
+                   <p>Website </p>
+                   <p>Address</p>
+            </div>
+           { data && filterData.map((user) => {
              
                return (
                <div className="flex-container" > 
-                  <input type="checkbox" name= {user.name}/>
+                  <input type="checkbox" name= {user.name} key={user.id} id={user.id}  />
                   <p>  {user.name}</p>
                    <p>{user.username}</p>
                    <p>  {user.email}</p>
@@ -54,8 +86,6 @@ function DisplayData() {
                    <p>{user.website} </p>
                    <p>  {user.address.street}</p>
                </div>
-                
-            
                )
               
                

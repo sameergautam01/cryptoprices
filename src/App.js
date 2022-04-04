@@ -6,6 +6,7 @@ import {
   ApolloProvider
 } from "@apollo/client";
 import DisplayData from './DisplayData';
+// import SearchBar from './SearchBar';
 
 function App() {
   const client = new ApolloClient({
@@ -15,7 +16,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
     <div className="App">
-     <DisplayData/>
+      <DisplayData />
     </div>
     </ApolloProvider>
   );
