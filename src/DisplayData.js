@@ -22,20 +22,12 @@ const ALL_USER_DATA= gql`
 
 const DisplayData=() => {
     
-    
-  
-    const[dataforCheckbox,setDataforCheckbox]=useState([]);
-    const [searchTerm,setSearchTerm]=useState("");
     const [filterData,setFilterData]=useState([]);
-
-    console.log(searchTerm);
-    console.log(filterData);
 
     const {data, error,loading} = useQuery(ALL_USER_DATA);
     useEffect(() => {
         if(data){
             setFilterData(data.users.data);
-            setDataforCheckbox(data.users.data);
         }
     },[data]);
     
@@ -47,23 +39,22 @@ const DisplayData=() => {
     }
       
     const handleCheckbox = (e) => {
-        const checkboxName=e.target.name;
-        const checkboxValue=e.target.checked;
-        if(checkboxName === "selectAll"){
-            const newData=dataforCheckbox.map(user => {
-                return {...user,isChecked:checkboxValue}
+        const {name, checked}=e.target
+        if(name === "selectAll"){
+            const newData=filterData.map(user => {
+                return {...user,isChecked:checked}
             })
-            setDataforCheckbox(newData);
+            console.log(newData);
+            setFilterData(newData);
         }
         else {
-        const newDataForCheckbox=dataforCheckbox.map(user => 
-            user.name === checkboxName ? {...user,isChecked:checkboxValue} : user
+        const newDataForCheckbox=filterData.map(user => 
+            user.name === name ? {...user,isChecked:checked} : user
         )
-        setDataforCheckbox(newDataForCheckbox);
+        setFilterData(newDataForCheckbox);
         }
     }
     const  handleonChange=(e)=> {
-        setSearchTerm(e.target.value)
          setFilterData(data.users.data.filter(user => {
             if(e.target.value.length === 0){
                 return user;
@@ -72,8 +63,7 @@ const DisplayData=() => {
             }
         }))
 }
-console.log(searchTerm);
-console.log(filterData);
+
 
 
     return (
@@ -81,7 +71,7 @@ console.log(filterData);
             
             <input type="text" placeholder="type your search text here" onChange={handleonChange} />
             <div className="flex-conta" > 
-            <input type="checkbox" name="selectAll" onChange={handleCheckbox}/>
+            <input type="checkbox" name="selectAll" onChange={handleCheckbox} checked={filterData.filter(user => user.isChecked !== true).length<1}/>
                     <p>Name</p>
                    <p>Username</p>
                    <p>Email</p>
@@ -93,7 +83,7 @@ console.log(filterData);
              
                return (
                <div className="flex-container" > 
-                  <input type="checkbox" name= {user.name} key={user.id} id={user.id} onChange={handleCheckbox}  checked={dataforCheckbox?.isChecked || false} />
+                  <input type="checkbox" name= {user.name} key={user.id} onChange={handleCheckbox}  checked={user?.isChecked || false} />
                   <p>  {user.name}</p>
                    <p>{user.username}</p>
                    <p>  {user.email}</p>
