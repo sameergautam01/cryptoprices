@@ -21,23 +21,15 @@ const ALL_USER_DATA= gql`
 `
 
 const DisplayData=() => {
-        
-    const  handleonChange=(e)=> {
-        setSearchTerm(e.target.value)
-        if(e.target.value.length>0){
-         setFilterData(data.users.data.filter(user => {
-                return user.name.toLowerCase().includes(searchTerm.toLowerCase()) ;
-            }))}
-        else {
-            setFilterData(data.users.data)
-        }
-        
-}
     
-
+    
+  
+  
     const [searchTerm,setSearchTerm]=useState("");
     const [filterData,setFilterData]=useState([]);
 
+    console.log(searchTerm);
+    console.log(filterData);
 
     const {data, error,loading} = useQuery(ALL_USER_DATA);
     useEffect(() => {
@@ -52,13 +44,19 @@ const DisplayData=() => {
     if (loading){
         return <h1> API is loading :p </h1>
     }
-
-    if (data){
-        console.log(data);
-    }
-    
-   
-    console.log(filterData);
+      
+    const  handleonChange=(e)=> {
+        setSearchTerm(e.target.value)
+         setFilterData(data.users.data.filter(user => {
+            if(e.target.value.length === 0){
+                return user;
+            }else {
+                return user.name.toLowerCase().includes(e.target.value.toLowerCase()) ;
+            }
+        }))
+}
+console.log(searchTerm);
+console.log(filterData);
 
 
     return (
