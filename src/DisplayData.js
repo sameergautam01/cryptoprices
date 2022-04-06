@@ -4,8 +4,8 @@ import {useQuery,gql} from "@apollo/client"
 
 const ALL_USER_DATA= gql`
   query GetUserData {
-      users {
-        data {
+      users{
+        data{
         id
         name
         username
@@ -63,9 +63,6 @@ const DisplayData=() => {
             }
         }))
 }
-
-
-
     return (
         <div >
             
@@ -83,7 +80,7 @@ const DisplayData=() => {
              
                return (
                <div className="flex-container" > 
-                  <input type="checkbox" name= {user.name} key={user.id} onChange={handleCheckbox}  checked={user?.isChecked || false} />
+                  <input type="checkbox" name= {user.name} key={user.id} onChange={handleCheckbox}  checked={user.isChecked} />
                   <p>  {user.name}</p>
                    <p>{user.username}</p>
                    <p>  {user.email}</p>
