@@ -7,7 +7,7 @@ import Coins from './components/Coins';
 function App() {
   const [data,setData]= useState([]);
     useEffect(()=> {
-    Axios.get("https://api.coinstats.app/public/v1/coins?skip=0&limit=10").then(res => {
+    Axios.get("https://api.coinstats.app/public/v1/coins?skip=0").then(res => {
       setData(res.data.coins);
     })
   },[]);

@@ -5,7 +5,7 @@ function Coins({icon, name , price , symbol}) {
     <div>
         <img src={icon} alt="logo" />
         <p>{name}</p>
-        <p>{price}</p>
+        <p>{price} Euros</p>
         <p>{symbol}</p>
     </div>
   )
